@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+/* White, black, and one blue. Every picture on the page is printed in that blue, as pixels. */
+:root {
+  color-scheme: light;
+  --bg: #ffffff;
+  --bg-2: #f6f7f9;
+  --ink: #0a0a0a;
+  --ink-2: #4d4d4d;
+  --ink-3: #8a8d93;
+  --line: #e6e7eb;
+  --blue: #2563eb;
+  --blue-deep: #1d3fae;
+  --blue-soft: #eef3fe;
+  --blue-line: #c9d8fb;
+  --sea: #142a7e;
+  --sea-2: #10226a;
+  --sea-line: #2a40a0;
+}
+
+@theme inline {
+  --font-sans: 'Rethink Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-dot: 'Doto', ui-monospace, monospace;
+
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-blue: var(--blue);
+  --color-blue-deep: var(--blue-deep);
+  --color-blue-soft: var(--blue-soft);
+  --color-blue-line: var(--blue-line);
+  --color-sea: var(--sea);
+  --color-sea-2: var(--sea-2);
+  --color-sea-line: var(--sea-line);
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+  html {
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+  }
+  ::selection {
+    background: var(--blue);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 2px;
+  }
+  code,
+  pre,
+  .font-mono {
+    font-variant-ligatures: none;
+  }
+}
+
+@layer components {
+  /* Headlines stay at regular weight and lean on size and tracking, as on context.dev. */
+  .headline {
+    font-weight: 400;
+    letter-spacing: -0.035em;
+    line-height: 1.04;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  /* A field of faint white dots, for behind the blue box in the hero. */
+  .dot-grid-night {
+    background-image: radial-gradient(rgb(255 255 255 / 0.12) 1px, transparent 1.3px);
+    background-size: 10px 10px;
+  }
+  /* context.dev's card: white, held in a pale blue rim. */
+  .frame {
+    background: #fff;
+    border: 5px solid #eef3fe;
+    border-radius: 12px;
+    box-shadow: 0 0 0 1px #dfe7fb, inset 0 0 0 1px #dfe7fb;
+  }
+  /* Where a card's picture sits: a rim, a margin of faint rings, then white. */
+  .well {
+    border: 5px solid #eef3fe;
+    border-radius: 9px;
+    box-shadow: 0 0 0 1px #dfe7fb;
+    background-color: #fff;
+    background-image: radial-gradient(circle, transparent 1.5px, #d3defb 1.6px, #d3defb 2.3px, transparent 2.5px);
+    background-size: 8px 8px;
+    padding: 12px;
+  }
+  .well-in {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 3px;
+    background: #fff;
+  }
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px rgb(10 10 10 / 0.08), 0 2px 4px rgb(10 10 10 / 0.03);
+  }
+  /* Pixel art stays pixels at any size. */
+  .px {
+    image-rendering: pixelated;
+  }
+}
+
+@keyframes note-in {
+  from { opacity: 0; transform: translateY(4px); }
+}
+@keyframes comment-in {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+}
+@keyframes stamp-once {
+  0% { transform: translateY(-30px) scale(1.3) rotate(-8deg); opacity: 0; }
+  70% { transform: translateY(0) scale(0.95) rotate(-8deg); opacity: 1; }
+  100% { transform: translateY(0) scale(1) rotate(-8deg); opacity: 1; }
+}
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* The repository, as a field of dots, lights up outward from the change and then settles. */
+.dot-wave {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: dot-wave 4s ease-out infinite;
+}
+@keyframes dot-wave {
+  0% { fill: #d3defb; transform: scale(1); }
+  5% { fill: var(--blue); transform: scale(1.5); }
+  30% { fill: #9fb9f6; transform: scale(1.1); }
+  60%, 100% { fill: #d3defb; transform: scale(1); }
+}
+
+/* A sprite's two frames, swapped while it moves. */
+@keyframes frame-a {
+  0%, 49.9% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes frame-b {
+  0%, 49.9% { opacity: 0; }
+  50%, 100% { opacity: 1; }
+}
+
+/* The pricing slider: a hairline track and a blue square for a thumb. */
+.range {
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+.range::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 9px;
+  background: linear-gradient(to right, var(--blue) var(--fill, 50%), rgb(10 10 10 / 0.1) var(--fill, 50%));
+}
+.range::-moz-range-track {
+  height: 3px;
+  border-radius: 9px;
+  background: linear-gradient(to right, var(--blue) var(--fill, 50%), rgb(10 10 10 / 0.1) var(--fill, 50%));
+}
+.range::-webkit-slider-thumb {
+  appearance: none;
+  margin-top: -8.5px;
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: var(--blue);
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px rgb(10 10 10 / 0.15), 0 4px 12px -2px rgb(37 99 235 / 0.5);
+}
+.range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 5px;
+  background: var(--blue);
+  border: 3px solid #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
